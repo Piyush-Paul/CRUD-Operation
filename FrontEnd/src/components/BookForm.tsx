@@ -4,12 +4,14 @@ import axios from "axios";
 const BookForm = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [totalQuantity, setTotalQuantity] = useState<number | undefined>();
+  const [availableQuantity, setAvailableQuantity] = useState<number | undefined>();
   const [publishedYear, setPublishedYear] = useState<number | undefined>();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     axios
-      .post("http://localhost:5000/books", { title, author, publishedYear })
+      .post("http://localhost:5000/books", { title, author, totalQuantity , availableQuantity ,  publishedYear })
       .then(() => alert("Book added successfully!"))
       .catch(() => {alert("Failed to add book!")});
   };
@@ -28,6 +30,18 @@ const BookForm = () => {
         placeholder="Author"
         value={author}
         onChange={(e) => setAuthor(e.target.value)}
+      />
+      <input
+        type="number"
+        placeholder="Total Quantity"
+        value={totalQuantity}
+        onChange={(e) => setTotalQuantity(Number(e.target.value))}
+      />
+      <input
+        type="number"
+        placeholder="AvailableQuantity"
+        value={availableQuantity}
+        onChange={(e) => setAvailableQuantity(Number(e.target.value))}
       />
       <input
         type="number"

@@ -1,10 +1,12 @@
 const Book = require('../models/Book.js');
 
 exports.createBook = async (req, res) => {
-  const { title, author, publishedYear } = req.body;
+  console.log(1);
+  
+  const { title, author, totalQuantity , availableQuantity , publishedYear } = req.body;
 
   try {
-    const book = await Book.create({ title, author, publishedYear });
+    const book = await Book.create({ title, author, totalQuantity , availableQuantity , publishedYear });
     res.status(201).json(book);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -22,13 +24,13 @@ exports.getBooks = async (req, res) => {
 
 exports.updateBook = async (req, res) => {
   const { id } = req.params;
-  const { title, author, publishedYear } = req.body;
+  const { title, author, totalQuantity , availableQuantity , publishedYear } = req.body;
 
   try {
     const book = await Book.findByPk(id);
     if (!book) return res.status(404).json({ message: 'Book not found' });
 
-    await book.update({ title, author, publishedYear });
+    await book.update({ title, author, totalQuantity , availableQuantity , publishedYear });
     res.json(book);
   } catch (error) {
     res.status(500).json({ error: error.message });

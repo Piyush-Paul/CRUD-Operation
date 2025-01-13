@@ -15,6 +15,12 @@ const Book = sequelize.define('Book', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  totalQuantity: {
+    type: DataTypes.INTEGER,
+  },
+  availableQuantity: {
+    type: DataTypes.INTEGER,
+  },
   publishedYear: {
     type: DataTypes.INTEGER,
   },

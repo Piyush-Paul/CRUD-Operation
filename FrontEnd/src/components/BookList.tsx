@@ -5,6 +5,8 @@ interface Book {
   id: number;
   title: string;
   author: string;
+  totalQuantity : number ;
+  availableQuantity : number ;
   publishedYear: number;
 }
 
@@ -24,7 +26,7 @@ const BookList = () => {
       <ul>
         {books.map((book) => (
           <li key={book.id}>
-            {book.title} by {book.author} ({book.publishedYear})
+            {book.title} by {book.author} ({book.publishedYear}) (Available Quentity : {book.availableQuantity} , Total Quantity : {book.totalQuantity})
           </li>
         ))}
       </ul>
