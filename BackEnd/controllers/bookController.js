@@ -1,7 +1,6 @@
 const Book = require('../models/Book.js');
 
 exports.createBook = async (req, res) => {
-  console.log(1);
   
   const { title, author, totalQuantity , availableQuantity , publishedYear } = req.body;
 

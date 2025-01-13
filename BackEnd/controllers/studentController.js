@@ -1,15 +1,13 @@
 const Student = require('../models/Student.js');
-const Book = require('../models/Student.js');
 
 exports.createStudent = async (req, res) => {
   const { name , roll , semester } = req.body;
-  console.log(1);
+  
   try {
     const student = await Student.create({ name , roll , semester });
-    console.log(2);
-
     res.status(201).json(student);
   } catch (error) {
+    
     res.status(500).json({ error: error.message });
   }
 };
