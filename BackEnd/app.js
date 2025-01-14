@@ -4,6 +4,7 @@ const sequelize = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const studentRoutes = require('./routes/studentRoutes');
+const Book = require('./models/Book');
 
 const app = express();
 
@@ -13,6 +14,13 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/books', bookRoutes);
 app.use('/student' , studentRoutes);
+app.get('/',async (req,res)=>{
+  const books = await Book.findAll({
+    attributes: ["title"]
+  });
+  const titles = books.map(book => book.title);
+  res.send(titles);
+})
 
 sequelize.sync({ force: false }).then(() => {
   console.log('Database synced');
