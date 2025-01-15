@@ -49,3 +49,20 @@ exports.deleteStudent = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.students = async( req,res) => {
+  let Students = {};
+  try {
+    Students = await Student.findAll({
+      attributes: ["roll","name"]
+  })
+  } catch (error) {
+    return res.status(500).json({Error: 'Something went wrong'});
+  }
+  const StudentId = Students.map( student => student.roll);
+  const StudentName = Students.map( student => student.name);
+  res.status(200).json({
+    Rolls: StudentId,
+    Name: StudentName,
+  });
+}
