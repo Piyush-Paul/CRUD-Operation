@@ -49,3 +49,15 @@ exports.deleteBook = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.booksName = async (req,res)=>{
+  try {
+    const books = await Book.findAll({
+      attributes: ["title"]
+    });
+  } catch (error) {
+    return res.status(404).json({error: err})
+  }
+  const titles = books.map(book => book.title);
+  res.status(200).json({Books: titles});
+}
