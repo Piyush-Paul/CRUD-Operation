@@ -1,4 +1,6 @@
 const Student = require('../models/Student.js');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 exports.createStudent = async (req, res) => {
   const { name , roll , semester } = req.body;
@@ -65,4 +67,16 @@ exports.students = async( req,res) => {
     Rolls: StudentId,
     Name: StudentName,
   });
+}
+
+exports.searchStudent = async(req,res) => {
+  const roll = req.params.Id;
+  
+  const searchedStudents = await Student.findAll({
+    where: {
+      roll: { [Op.like]: `%${roll}%`}
+    }
+  });
+  
+  res.status(200).json({Students: searchedStudents});
 }

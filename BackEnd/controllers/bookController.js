@@ -1,4 +1,8 @@
 const Book = require('../models/Book.js');
+const Sequelize = require('sequelize');
+const IssuedBook = require('../models/IssuedBook.js');
+const sequelize = require('../config/database.js');
+const Op = Sequelize.Op;
 
 exports.createBook = async (req, res) => {
 
@@ -50,15 +54,40 @@ exports.deleteBook = async (req, res) => {
   }
 };
 
-exports.booksName = async (req,res)=>{
-  let books = {};
+exports.bookSearch = async (req,res)=>{
+  const title = req.params.Title;
   try {
-    books = await Book.findAll({
-      attributes: ["title"]
-    });
+    const searchedBook = await Book.findAll({
+      where: {
+        title: { [Op.like]: `%${title}%`}
+      }
+    }); 
+    return res.status(200).json({Books: searchedBook});
   } catch (error) {
-    return res.status(404).json({error: err})
+    console.log(error);
+    
+    return res.status(500).json({Error: error});
   }
-  const titles = books.map(book => book.title);
-  return res.status(200).json({Books: titles});
+}
+
+exports.issuedBook = async (req,res) => {
+  const {SudentRoll,BookId,AvailableQuantity} = req.body[0];
+  const t = await sequelize.transaction();
+  try {
+    await Book.update({availableQuantity: (AvailableQuantity-1)},{where: {id: BookId}}, {transaction: t});
+    try {
+      const issuedBook = await IssuedBook.create({
+        bookId: BookId,
+        studentId: SudentRoll
+      },{transaction: t});
+      await t.commit();
+      return res.status(200).json(issuedBook);
+    } catch (error) {
+      await t.rollback();
+      return res.status(500).json({error: error.message});
+    }
+  } catch (error) {
+    await t.rollback();
+    return res.status(500).json({error: error.message});
+  }
 }

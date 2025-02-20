@@ -16,6 +16,9 @@ const Navbar = () => {
       <Link to="/">Home</Link>
       {user ? (
         <>
+          <Link to="/add-book">Add Book</Link>
+          <Link to="/add-student">Add Student</Link>
+          <Link to="/issued-book">Issued Book</Link>
           <span>Welcome, {user}</span>
           <button onClick={handleLogout}>Logout</button>
         </>
